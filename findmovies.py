@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import fnmatch
 import os
 import re
@@ -12,56 +13,58 @@ def find_movies(folderpath):
     return movienames
 
 def clean_movienames(movienames):
+    newmovienames = []
     for moviename in movienames:
-        moviename = moviename.replace("."," ")
-        moviename = moviename.lower()
-        moviename = moviename[:-4]
+        newmoviename = moviename[:-4].replace("."," ").lower()
+     
         try:
             m = re.search('\(.*',moviename)
-            moviename = moviename.replace(m.group(0),'')
+            newmoviename = moviename.replace(m.group(0),'')
         except:
             None
         try:
             m = re.search('french.*',moviename)
-            moviename = moviename.replace(m.group(0),'')
+            newmoviename = moviename.replace(m.group(0),'')
         except:
             None
         try:
             m = re.search('dvdrip.*',moviename)
-            moviename = moviename.replace(m.group(0),'')
+            newmoviename = moviename.replace(m.group(0),'')
         except:
             None
         try:
             m = re.search('1080p.*',moviename)
-            moviename = moviename.replace(m.group(0),'')
+            newmoviename = moviename.replace(m.group(0),'')
         except:
             None
         try:
             m = re.search('vostfr.*',moviename)
-            moviename = moviename.replace(m.group(0),'')
+            newmoviename = moviename.replace(m.group(0),'')
         except:
             None
         try:
             m = re.search('\[.*]',moviename)
-            moviename = moviename.replace(m.group(0),'')
+            newmoviename = moviename.replace(m.group(0),'')
         except:
             None
         try:
             m = re.search('brrip.*',moviename)
-            moviename = moviename.replace(m.group(0),'')
+            newmoviename = moviename.replace(m.group(0),'')
         except:
             None
         try:
             m = re.search('xvid.*',moviename)
-            moviename = moviename.replace(m.group(0),'')
+            newmoviename = moviename.replace(m.group(0),'')
         except:
             None
-        print moviename
+        newmovienames.append(newmoviename)
+        
+    return newmovienames
 
 def main():
     movienames = find_movies('/Users/anaelle/Desktop/In Process/Films')
-    print clean_movienames(movienames)
-    #print '\n'.join(movienames)
+    movienames = clean_movienames(movienames)
+    print '\n'.join(movienames)
 
 if __name__ == "__main__":
     main()
