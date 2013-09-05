@@ -2,58 +2,67 @@ import fnmatch
 import os
 import re
 
-movienames = []
-for root, dirnames, filenames in os.walk('/Users/anaelle/Desktop/In Process/Films'):
-    for extension in ('*.avi', '*.mp4', '*.mkv'):
-        for filename in fnmatch.filter(filenames, extension):
-            movienames.append(filename)
+#'/Users/anaelle/Desktop/In Process/Films'
+def find_movies(folderpath):
+    movienames = []
+    for root, dirnames, filenames in os.walk(folderpath):
+        for extension in ('*.avi', '*.mp4', '*.mkv'):
+            for filename in fnmatch.filter(filenames, extension):
+                movienames.append(filename)
+    return movienames
 
-#print '\n'.join(movienames)
-print len(movienames)
-for moviename in movienames:
-    moviename = str(moviename).replace("."," ")
-    #moviename = str(moviename).replace("avi"," ")
-    moviename = moviename[:-4]
-    moviename = moviename.lower()
-    try:
-        m1 = re.search('\(.*',moviename)
-        moviename = moviename.replace(m1.group(0),'')
-    except:
-        None
-    try:
-        m1 = re.search('french.*',moviename)
-        moviename = moviename.replace(m1.group(0),'')
-    except:
-        None
-    try:
-        m1 = re.search('dvdrip.*',moviename)
-        moviename = moviename.replace(m1.group(0),'')
-    except:
-        None
-    try:
-        m1 = re.search('1080p.*',moviename)
-        moviename = moviename.replace(m1.group(0),'')
-    except:
-        None
-    try:
-        m1 = re.search('vostfr.*',moviename)
-        moviename = moviename.replace(m1.group(0),'')
-    except:
-        None
-    try:
-        m1 = re.search('\[.*]',moviename)
-        moviename = moviename.replace(m1.group(0),'')
-    except:
-        None
-    try:
-        m1 = re.search('brrip.*',moviename)
-        moviename = moviename.replace(m1.group(0),'')
-    except:
-        None
-    try:
-        m1 = re.search('xvid.*',moviename)
-        moviename = moviename.replace(m1.group(0),'')
-    except:
-        None
-    print moviename
-#print '\n'.join(movienames)
+def clean_movienames(movienames):
+    for moviename in movienames:
+        moviename = moviename.replace("."," ")
+        moviename = moviename.lower()
+        moviename = moviename[:-4]
+        try:
+            m = re.search('\(.*',moviename)
+            moviename = moviename.replace(m.group(0),'')
+        except:
+            None
+        try:
+            m = re.search('french.*',moviename)
+            moviename = moviename.replace(m.group(0),'')
+        except:
+            None
+        try:
+            m = re.search('dvdrip.*',moviename)
+            moviename = moviename.replace(m.group(0),'')
+        except:
+            None
+        try:
+            m = re.search('1080p.*',moviename)
+            moviename = moviename.replace(m.group(0),'')
+        except:
+            None
+        try:
+            m = re.search('vostfr.*',moviename)
+            moviename = moviename.replace(m.group(0),'')
+        except:
+            None
+        try:
+            m = re.search('\[.*]',moviename)
+            moviename = moviename.replace(m.group(0),'')
+        except:
+            None
+        try:
+            m = re.search('brrip.*',moviename)
+            moviename = moviename.replace(m.group(0),'')
+        except:
+            None
+        try:
+            m = re.search('xvid.*',moviename)
+            moviename = moviename.replace(m.group(0),'')
+        except:
+            None
+        print moviename
+
+def main():
+    movienames = find_movies('/Users/anaelle/Desktop/In Process/Films')
+    print clean_movienames(movienames)
+    #print '\n'.join(movienames)
+
+if __name__ == "__main__":
+    main()
+
