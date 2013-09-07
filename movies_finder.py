@@ -1,15 +1,20 @@
 #!/usr/bin/env python
 
+# googlesearch inspiration: http://stackoverflow.com/questions/1657570/
+# google-search-from-a-python-app
+
 import os
 import re
 import fnmatch
 import urllib2
+import movie
 
 # Google returns 403 error without user agent        
-USER_AGENT = ("Mozilla/5.0 (Macintosh; I; Intel Mac OS X 11_7_9; de-LI; rv:1.9b4) Gecko/2012010317 Firefox/10.0a4")
-        
-HEADERS = { 'User-Agent': USER_AGENT }
+HEADERS = { 'User-Agent': 'Mozilla/11.0' }
 
+IMDB = 'http://www.imdb.com/'
+
+# retrieve avi, mkv and mp4 files in a given folder
 def find_movies(folderpath):
     movienames = []
     for root, dirnames, filenames in os.walk(folderpath):
@@ -18,13 +23,14 @@ def find_movies(folderpath):
                 movienames.append(filename)
     return movienames
 
-def clean_movienames(movienames):
-    newmovienames = []
+# clean names by deleting frequent pattern, and create a list of movies
+def clean_movienames(movienames,path):
     newmoviename = ""
+    movies_list = []
     for moviename in movienames:
         newmoviename = moviename[:-4].replace("."," ").lower()
         try:
-            newmoviename = re.sub('\(.*','')
+            newmoviename = re.sub('(.*','')
         except:
             None
         try:
@@ -56,9 +62,10 @@ def clean_movienames(movienames):
         except:
             None
             
-        newmovienames.append(newmoviename)
+        m = movie.Movie(path+moviename,newmoviename)
+        movies_list.append(m)
         
-    return newmovienames
+    return movies_list
 
 def getgooglesearchlink(search,searchsite=False):
     if searchsite == False:
@@ -114,20 +121,25 @@ def googlesearch(search,searchsite=False):
             if link.find('http') == 0:
                 return link
     return None
+
+# Go to imdb.com and retrieve movie information   
+#def get_info(movie):
     
 def main():
-    movienames = find_movies('/Users/anaelle/Desktop/In Process/Films')
-    movienames = clean_movienames(movienames)
+    path = '/Users/anaelle/Desktop/In Process/Films/'
+    movienames = find_movies(path)
+    movies_list = clean_movienames(movienames,path)
     #print '\n'.join(movienames)
     #links = googlesearch('savages','http://www.imdb.com/')
     #for link in links:
         #print link
-    imdb = 'http://www.imdb.com/'
-    for moviename in movienames:
-        link = googlesearch(moviename,imdb)
-        print moviename
-        print link
-        print "-----------------------------------"
+    
+    for movie in movies_list:
+        #print repr(movie)
+        link = googlesearch(moviename,IMDB)
+        movie.imdblink = link
+        #get_info(movie) #attention voir si ca modifie sans retourner quch
+        print str(movie)
         
         
 if __name__ == "__main__":
