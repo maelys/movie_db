@@ -27,18 +27,6 @@ class DatabaseManager:
         # Commit the changes
         self.conn.commit()
 
-    # to check
-    def movie_exist(self, movie_name):
-        # Check if a movie is already in the database
-        self.c.execute('SELECT COUNT (*) FROM movies WHERE movie_name = %s' % movie_name)
-        result = self.c.fetchone()
-        count = result[0]
-        print count
-        if (count == 0):
-            return False
-        else:
-            return True
-
     def print_db(self):
         # Select all
         self.c.execute('SELECT* FROM movies')
