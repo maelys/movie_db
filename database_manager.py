@@ -2,9 +2,9 @@ import sqlite3
 
 class DatabaseManager:
     
-    CREATE_TABLE = "CREATE TABLE IF NOT EXISTS movies (movie_name PRIMARY KEY \
-        text, movie_path text, imdb_link text, cover_url text, summary text \
-        imdb_rating int, anaelle_rating int);"
+    CREATE_TABLE = "CREATE TABLE IF NOT EXISTS movies (movie_name PRIMARY KEY, \
+        movie_path text, imdb_link text, cover_url text, summary text, \
+        imdb_rating float, anaelle_rating float);"
         
     INSERT_QUERY = "INSERT INTO movies (movie_name, movie_path, imdb_link, \
         cover_url, summary, imdb_rating, anaelle_rating) \
