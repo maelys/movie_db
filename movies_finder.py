@@ -132,8 +132,20 @@ def get_info(movie):
     soup = BeautifulSoup(page_content,from_encoding="utf-8")
     for tag in soup.find_all('meta'):
         if tag.get('property') == "og:title":
-           movie.movie_name = tag.get('content').encode('utf-8')
+            movie.movie_name = tag.get('content').encode('utf-8')
            #print movie.movie_name
+        if tag.get('name') == "description":
+            movie.summary = tag.get('content').encode('utf-8')
+        if tag.get('property') == "og:image":
+            movie.cover_url = tag.get('content').encode('utf-8')
+          
+    #for tag in soup.find_all("p",text = True):
+        #if tag.get('itemprop') == 'description':
+            #movie.summary = tag.contents[0]
+    #<link rel='image_src' href=
+    for tag in soup.find_all('span'):
+       if tag.get('itemprop') == "ratingValue":
+           movie.imdb_rating = float(tag.contents[0])
     
     
 def main():
@@ -150,6 +162,10 @@ def main():
         link = googlesearch(movie.movie_name,IMDB)
         movie.imdb_link = link
         get_info(movie) #attention voir si ca modifie sans retourner quch
+        #print movie.movie_name
+        #print movie.summary
+        #print movie.imdb_rating
+        #print movie.seen
         print str(movie)
         
         
