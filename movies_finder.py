@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # googlesearch inspiration: http://stackoverflow.com/questions/1657570/
 # google-search-from-a-python-app
@@ -7,6 +8,8 @@ import os
 import re
 import fnmatch
 import urllib2
+import urllib
+from bs4 import BeautifulSoup
 import movie
 
 # Google returns 403 error without user agent        
@@ -123,7 +126,15 @@ def googlesearch(search,searchsite=False):
     return None
 
 # Go to imdb.com and retrieve movie information   
-#def get_info(movie):
+def get_info(movie):
+    req = urllib2.Request(movie.imdb_link, None, HEADERS)
+    page_content = urllib2.urlopen(req).read()
+    soup = BeautifulSoup(page_content,from_encoding="utf-8")
+    for tag in soup.find_all('meta'):
+        if tag.get('property') == "og:title":
+           movie.movie_name = tag.get('content').encode('utf-8')
+           #print movie.movie_name
+    
     
 def main():
     path = '/Users/anaelle/Desktop/In Process/Films/'
@@ -136,9 +147,9 @@ def main():
     
     for movie in movies_list:
         #print repr(movie)
-        link = googlesearch(moviename,IMDB)
-        movie.imdblink = link
-        #get_info(movie) #attention voir si ca modifie sans retourner quch
+        link = googlesearch(movie.movie_name,IMDB)
+        movie.imdb_link = link
+        get_info(movie) #attention voir si ca modifie sans retourner quch
         print str(movie)
         
         

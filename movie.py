@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Movie(object):
      
     def __init__(self,movie_path, movie_name = None, imdb_link = None,\
