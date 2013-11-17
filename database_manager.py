@@ -1,4 +1,5 @@
 import sqlite3
+import movie
 
 class DatabaseManager:
     
@@ -17,6 +18,7 @@ class DatabaseManager:
     def connect(self):
         self.conn = sqlite3.connect('database.sqlite')
         self.c = self.conn.cursor()
+        # encodage
         self.conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
         # Create table
         self.c.execute(self.CREATE_TABLE)
@@ -38,6 +40,25 @@ class DatabaseManager:
             title = row[0]
             titles.append(title)
         return titles
+
+    def import_db(self):
+        self.c.execute('SELECT* FROM movies')
+        movies_list = []
+        while True:
+            row = self.c.fetchone()
+	    if row == None:
+                break
+	    movie_path = row[1]
+	    movie_name = row[0]
+	    imdb_link = row[2]
+	    cover_url = row[3]
+	    summary = row[4]
+	    imdb_rating = row[5]
+	    anaelle_rating = row[6]
+	    seen = row[7]
+            m = movie.Movie(movie_path,movie_name,imdb_link,cover_url,summary,imdb_rating,anaelle_rating,seen)
+            movies_list.append(m)
+        return movies_list
 
     def print_db(self):
         # Select all

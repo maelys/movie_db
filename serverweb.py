@@ -15,8 +15,9 @@ def x():
         db = database_manager.DatabaseManager()
         db.connect()
 	titles = db.select_title()
+	movies_list = db.import_db()
         db.close()
-        return render_template('index.html', to_print=titles)
+        return render_template('index.html', to_print=movies_list)
 
     if request.method == 'POST':
         print 'POST keys: ', request.form.keys()

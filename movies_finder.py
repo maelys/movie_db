@@ -136,7 +136,9 @@ def get_info(movie):
             movie.movie_name = tag.get('content').encode('utf-8')
            #print movie.movie_name
         if tag.get('name') == "description":
-            movie.summary = tag.get('content').encode('utf-8')
+            summary = tag.get('content')
+            movie.summary = ".".join(summary.split(".")[2:]).encode('utf-8')
+	    
         if tag.get('property') == "og:image":
             movie.cover_url = tag.get('content').encode('utf-8')
           
