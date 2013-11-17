@@ -11,6 +11,7 @@ import urllib2
 import urllib
 from bs4 import BeautifulSoup
 import movie
+import database_manager
 
 # Google returns 403 error without user agent        
 HEADERS = { 'User-Agent': 'Mozilla/11.0' }
@@ -167,6 +168,11 @@ def main():
         #print movie.imdb_rating
         #print movie.seen
         print str(movie)
+        db = database_manager.DatabaseManager()
+	db.connect()
+	insert_values = (movie.movie_name,movie.movie_path,movie.imdb_link,movie.cover_url,movie.summary,movie.imdb_rating,movie.anaelle_rating, movie.seen)
+        db.insert(insert_values)
+        db.close()
         
         
 if __name__ == "__main__":
