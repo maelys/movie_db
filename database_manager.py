@@ -3,13 +3,13 @@ import movie
 
 class DatabaseManager:
     
-    CREATE_TABLE = "CREATE TABLE IF NOT EXISTS movies (movie_name PRIMARY KEY, \
-        movie_path text, imdb_link text, cover_url text, summary text, \
+    CREATE_TABLE = "CREATE TABLE IF NOT EXISTS movies (id integer PRIMARY KEY AUTOINCREMENT, movie_name text, \
+        movie_path text, imdb_link text, cover blob, summary text, \
         imdb_rating float, anaelle_rating float, seen integer);"
         
-    INSERT_QUERY = "INSERT INTO movies (movie_name, movie_path, imdb_link, \
-        cover_url, summary, imdb_rating, anaelle_rating, seen) \
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+    INSERT_QUERY = "INSERT INTO movies (id, movie_name, movie_path, imdb_link, \
+        cover, summary, imdb_rating, anaelle_rating, seen) \
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?,?);"
 
     conn = ''
 
@@ -46,17 +46,17 @@ class DatabaseManager:
         movies_list = []
         while True:
             row = self.c.fetchone()
-	    if row == None:
+	        if row == None:
                 break
-	    movie_path = row[1]
-	    movie_name = row[0]
-	    imdb_link = row[2]
-	    cover_url = row[3]
-	    summary = row[4]
-	    imdb_rating = row[5]
-	    anaelle_rating = row[6]
-	    seen = row[7]
-            m = movie.Movie(movie_path,movie_name,imdb_link,cover_url,summary,imdb_rating,anaelle_rating,seen)
+	        movie_path = row[2]
+	        movie_name = row[1]
+	        imdb_link = row[3]
+	        #cover = row[4]
+	        summary = row[5]
+	        imdb_rating = row[6]
+	        anaelle_rating = row[7]
+	        seen = row[8]
+            m = movie.Movie(movie_path,movie_name,imdb_link,cover,summary,imdb_rating,anaelle_rating,seen)
             movies_list.append(m)
         return movies_list
 

@@ -140,7 +140,15 @@ def get_info(movie):
             movie.summary = ".".join(summary.split(".")[2:]).encode('utf-8')
 	    
         if tag.get('property') == "og:image":
-            movie.cover_url = tag.get('content').encode('utf-8')
+            cover_url = tag.get('content').encode('utf-8')
+            site_cover = urllib2.urlopen(cover_url)
+            img = site_cover.read()
+            writ = open("wimg","w")
+            writ.write(img)
+            write.close()
+            site_cover.close()
+            movie.cover = "wimg"
+            os.remove("wimg")
           
     #for tag in soup.find_all("p",text = True):
         #if tag.get('itemprop') == 'description':
@@ -152,7 +160,7 @@ def get_info(movie):
     
     
 def main():
-    path = '/Users/anaelle/Desktop/In Process/Films/'
+    path = '/home/anaelle/Desktop/movie-db/movies'
     movienames = find_movies(path)
     movies_list = clean_movienames(movienames,path)
     #print '\n'.join(movienames)
@@ -171,8 +179,8 @@ def main():
         #print movie.seen
         print str(movie)
         db = database_manager.DatabaseManager()
-	db.connect()
-	insert_values = (movie.movie_name,movie.movie_path,movie.imdb_link,movie.cover_url,movie.summary,movie.imdb_rating,movie.anaelle_rating, movie.seen)
+        db.connect()
+        insert_values = (movie.movie_name,movie.movie_path,movie.imdb_link,movie.cover,movie.summary,movie.imdb_rating,movie.anaelle_rating, movie.seen)
         db.insert(insert_values)
         db.close()
         
