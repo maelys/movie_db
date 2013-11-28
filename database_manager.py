@@ -46,19 +46,36 @@ class DatabaseManager:
         movies_list = []
         while True:
             row = self.c.fetchone()
-	        if row == None:
+            if row == None:
                 break
-	        movie_path = row[2]
-	        movie_name = row[1]
-	        imdb_link = row[3]
-	        #cover = row[4]
-	        summary = row[5]
-	        imdb_rating = row[6]
-	        anaelle_rating = row[7]
-	        seen = row[8]
-            m = movie.Movie(movie_path,movie_name,imdb_link,cover,summary,imdb_rating,anaelle_rating,seen)
+            id_ = row[0]
+            movie_path = row[2]
+            movie_name = row[1]
+            imdb_link = row[3]
+            cover = row[4]
+            summary = row[5]
+            imdb_rating = row[6]
+            anaelle_rating = row[7]
+            seen = row[8]
+            m = movie.Movie(id_,movie_path,movie_name,imdb_link,cover,summary,imdb_rating,anaelle_rating,seen)
             movies_list.append(m)
         return movies_list
+
+    def find_movie(self,title):
+        self.c.execute('SELECT* FROM movies WHERE movie_name=:movie_name',{"movie_name": title})
+        row = self.c.fetchone()
+        id_ = row[0]
+        movie_path = row[2]
+        movie_name = row[1]
+        imdb_link = row[3]
+        cover = row[4]
+        summary = row[5]
+        imdb_rating=row[6]
+        anaelle_rating=row[7]
+        seen=row[8]
+        return movie.Movie(id_,movie_path,movie_name,imdb_link,cover,summary,imdb_rating,anaelle_rating,seen)
+
+
 
     def print_db(self):
         # Select all
