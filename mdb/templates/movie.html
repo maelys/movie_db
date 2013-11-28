@@ -1,15 +1,20 @@
 <HTML>
 <head>
-<title>movie page</title>
-<meta charset="utf-8">
+    <title>{{ i.movie_name }}</title>
+    <meta charset="utf-8">
 </head>
 <body>
     <b> {{ i.movie_name }}</b> <br>
     {{ i.summary }}<br>
     imdb rating: {{ i.imdb_rating }}<br>
-    anaelle rating: {{ i.anaelle_rating }}<br>
-    url: {{ i.imdb_link }}<br>
-    seen: {{ i.seen }}<br>
+    <a href="{{ url_for('my_rating',id_=i.id_) }}">my_rating</a><br>
+    my rating: {{ i.anaelle_rating }}<br>
+    <a href="{{ i.imdb_link }}">imdb</a><br>
+    <a href="{{ url_for('update_s', id_=i.id_) }}">seen</a>
+        {% if i.seen == 0 %} no
+        {% else %} yes
+        {% endif %} <br>
+
 </body>
 
 

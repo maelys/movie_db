@@ -1,0 +1,16 @@
+<HTML>
+<head>
+    <title>rating {{ i.movie_name }}</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<form action="" method="post" name="rate_form">
+    {{form.hidden_tag()}}
+    <p>
+     Please enter your rating:<br>
+    </p>
+    <p>{{ form.rate(size=10) }}</p>
+    <p><input type="submit" value="rating"</p>
+</form>
+</body>
+

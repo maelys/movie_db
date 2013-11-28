@@ -61,8 +61,8 @@ class DatabaseManager:
             movies_list.append(m)
         return movies_list
 
-    def find_movie(self,title):
-        self.c.execute('SELECT* FROM movies WHERE movie_name=:movie_name',{"movie_name": title})
+    def find_movie(self,id_):
+        self.c.execute('SELECT* FROM movies WHERE id=?',(id_))
         row = self.c.fetchone()
         id_ = row[0]
         movie_path = row[2]
@@ -75,6 +75,14 @@ class DatabaseManager:
         seen=row[8]
         return movie.Movie(id_,movie_path,movie_name,imdb_link,cover,summary,imdb_rating,anaelle_rating,seen)
 
+
+    def update_seen(self,id_,seen):
+        self.c.execute('UPDATE movies SET seen=? WHERE id=?',(seen,id_))
+        self.conn.commit()
+
+    def update_rating(self,id_,rating):
+        self.c.execute('UPDATE movies SET anaelle_rating=? WHERE id=?',(float(rating),id_))
+        self.conn.commit()
 
 
     def print_db(self):
