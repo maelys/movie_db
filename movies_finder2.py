@@ -155,12 +155,12 @@ def get_info(movie):
             cover_url = tag.get('content').encode('utf-8')
             site_cover = urllib2.urlopen(cover_url)
             img = site_cover.read()
-            writ = open('wimg.jpg',"w")
-            writ.write(img)
-            writ.close()
-            site_cover.close()
-            fin = open('wimg.jpg',"rb")
-            img = fin.read()
+            #writ = open('wimg.jpg',"w")
+            #writ.write(img)
+            #writ.close()
+            #site_cover.close()
+            #fin = open('wimg.jpg',"rb")
+            #img = fin.read()
             binary = sqlite3.Binary(img)
 
             movie.cover = binary

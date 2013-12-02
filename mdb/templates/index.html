@@ -8,6 +8,7 @@
     <b> <a href="{{ url_for('movie', id_ = i.id_) }}">
      {{ i.movie_name }}</b></a> <br>
     {{ i.summary }}<br>
+    <img src="/images/{{ i.id_ }}.jpg"/> <br>
 {% endfor %}
 <br>
 

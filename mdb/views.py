@@ -1,6 +1,6 @@
 from mdb import app
 import database_manager
-from flask import Flask, render_template, flash, redirect
+from flask import Flask, render_template, flash, redirect, make_response, Response
 from forms import AnaelleRateForm
 
 @app.route('/')
@@ -44,3 +44,16 @@ def my_rating(id_):
         db.update_rating(id_,form.rate.data)
         return redirect('/index')
     return render_template('rate_form.html', title = 'rating', form = form,i=m)
+
+@app.route('/images/<id_>.jpg')
+def getImage(id_):
+    db = database_manager.DatabaseManager()
+    db.connect()
+    m = db.find_movie(id_)
+    print m.cover[0:20]
+    open('/tmp/x.jpg', 'w').write(m.cover)
+    #response = make_response(m.cover)
+    #response.headers['Content-Type'] = 'image/jpeg'
+    #return response
+    return Response(m.cover, content_type='image/jpeg')
+
