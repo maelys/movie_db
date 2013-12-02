@@ -4,6 +4,7 @@
 # googlesearch inspiration: http://stackoverflow.com/questions/1657570/
 # google-search-from-a-python-app
 
+import pdb
 import os
 import re
 import fnmatch
@@ -43,6 +44,7 @@ def find_movies(folderpath):
 def clean_movienames(movienames,path):
     newmoviename = ""
     movies_list = []
+    count = 0
     for moviename in movienames:
         newmoviename = moviename[:-4].replace("."," ").lower()
         try:
@@ -78,8 +80,9 @@ def clean_movienames(movienames,path):
         except:
             None
             
-        m = movie.Movie(path+moviename,newmoviename)
+        m = movie.Movie(count,path+moviename,newmoviename)
         movies_list.append(m)
+        count = count+1
         
     return movies_list
 
@@ -176,24 +179,27 @@ def get_info(movie):
     
     
 def main():
-    #path = '/home/anaelle/Desktop/movie-db/movies'
-    #movienames = find_movies(path)
-    #movies_list = clean_movienames(movienames,path)
-
-    imdb_list = ["http://www.imdb.com/title/tt1758692/","http://www.imdb.com/title/tt2194499/","http://www.imdb.com/title/tt0780504/","http://www.imdb.com/title/tt0111161/"]
+    path = "/Users/anaelle/Desktop/Films/"
+    print path
+    movienames = find_movies(path)
+    print movienames
+    movies_list = clean_movienames(movienames,path)
+    print movies_list
+    #imdb_list = ["http://www.imdb.com/title/tt1758692/","http://www.imdb.com/title/tt2194499/","http://www.imdb.com/title/tt0780504/","http://www.imdb.com/title/tt0111161/"]
     #print '\n'.join(movienames)
     #links = googlesearch('savages','http://www.imdb.com/')
     #for link in links:
         #print link
-    movies_list = test(imdb_list)
+    #movies_list = test(imdb_list)
     
     count = 0        
     db = database_manager.DatabaseManager()
     db.connect()
     for movie in movies_list:
         #print repr(movie)
-        #link = googlesearch(movie.movie_name,IMDB)
-        #movie.imdb_link = link
+        link = googlesearch(movie.movie_name,IMDB)
+        print link
+        movie.imdb_link = link
         get_info(movie) #attention voir si ca modifie sans retourner quch
         #print movie.movie_name
         #print movie.summary
